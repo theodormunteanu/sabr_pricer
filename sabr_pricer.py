@@ -9,14 +9,16 @@ import QuantLib as ql
 import black_scholes_pricers as bsp
 import scipy.optimize as opt
 import numpy as np
-import pandas as pd
-import xlwings as xw
-import yfinance as yf
-import datetime as dt
+#import pandas as pd
+#import xlwings as xw
+#import yfinance as yf
+#import datetime as dt
 import sys
-import option_price_BS as opt_BS
-import heston_calibrator as HC
-import collections 
+sys.path.append(r'C:\Users\XYZW\Documents\Python Scripts\equity exotics')
+sys.path.append(r'C:\Users\XYZW\Documents\Python Scripts\Quantlib_tests')
+#import option_price_BS as opt_BS
+#import heston_calibrator as HC
+#import collections 
 
 #%%
 def sabr_pricer(S0,rf,dvd,ref_date,T,strike,alpha,beta,nu,rho,
@@ -56,8 +58,7 @@ def sabr_pricer(S0,rf,dvd,ref_date,T,strike,alpha,beta,nu,rho,
 
 def sabr_calibrator(S0,rf,T,strikes,mkt_prices,init_sol = [0.5]*4,dvd = 0.0,ref_date = None):
     """
-    Given a certain expiry, find the parameters of SABR model matching the market prices
-    of options.
+    Given a smile of market prices, find the parameters of SABR model matching the market pricesof options.
     """
     if ref_date == None:
         ref_date = ql.Date().todaysDate()
@@ -75,6 +76,19 @@ def sabr_calibrator(S0,rf,T,strikes,mkt_prices,init_sol = [0.5]*4,dvd = 0.0,ref_
 
 def sabr_calibrator2(S0,rf,expiries,strikes,mkt_prices,init_sol = [0.5]*4,dvd = 0.0,ref_date = None,
                      bnd_corr = None):
+    """
+    Given an entire surface (strike x expiries) of market prices find the sabr 
+    model parameters. 
+    
+    Parameters:
+        ref_date: reference date
+        
+        dvd: dividend rate
+        
+        strikes: strike prices
+        
+        bnd_corr: bounds over correlation
+    """
     if ref_date == None:
         ref_date = ql.Date().todaysDate()
     sabr_func = lambda z:[[sabr_pricer(S0, rf,0, ref_date,y,x,z[0],z[1],z[2],z[3],"call")
