@@ -14,8 +14,6 @@ import xlwings as xw
 import yfinance as yf
 import datetime as dt
 import sys
-sys.path.append(r'C:\Users\XYZW\Documents\Python Scripts\equity exotics')
-sys.path.append(r'C:\Users\XYZW\Documents\Python Scripts\Quantlib_tests')
 import option_price_BS as opt_BS
 import heston_calibrator as HC
 import collections 
